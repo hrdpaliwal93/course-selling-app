@@ -1,7 +1,7 @@
 const Router = require("express")
 const adminRouter = Router();
 const jwt = require('jsonwebtoken')
-const adminModel = require('../db')
+const {adminModel} = require('../db')
 const adminMiddleware = require('../middlewares/admin')
 
 adminRouter.post('/signup', (req, res) => {
