@@ -1,7 +1,7 @@
 const Router = require('express')
 
 const courseRouter = Router()
-
+const courseModel = require('../db')
 
 
 courseRouter.get('/', (req,res)=>{
@@ -14,4 +14,4 @@ courseRouter.get('/:courseid', (req,res)=>{
     
 })
 
-export default courseRouter;
+module.exports = courseRouter

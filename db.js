@@ -1,7 +1,9 @@
 const mongoose = require('mongoose')
-
+require('dotenv').config()
 const Schema = mongoose.Schema;
-const objectID = mongoose.objectID;
+const objectID = mongoose.Types.ObjectId;
+
+mongoose.connect(`${process.env.DB_URL}course-selling-app`).then(console.log("database connected")).catch((e)=>console.log(e))
 
 const userschema = new Schema({
     username: String,
@@ -20,7 +22,7 @@ const courseschema = new Schema({
 
 })
 
-const purchasesschema = new Schema({
+const purchaseschema = new Schema({
     courseID: objectID,
     userID: objectID,
 
@@ -36,7 +38,7 @@ const adminschema = new Schema({
 
 const userModel = mongoose.model('users', userschema);
 const courseModel = mongoose.model('courses', courseschema)
-const adminModel = mongoose.model('admin', adminchema)
+const adminModel = mongoose.model('admin', adminschema)
 const purchasesModel = mongoose.model('purchases', purchaseschema)
 
 module.exports = {
