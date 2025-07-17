@@ -67,7 +67,8 @@ adminRouter.post('/create/course',adminMiddleware, async (req, res) => {
          //watch kirat video on coind web3 saas in 6 hrs....to know how to make a pipeline to that user can directly add image to DB rather than URL
     })
     res.json({
-        courseID:course-_id
+        message:"course created !!",
+        courseID:course._id
     })
 
        
@@ -93,20 +94,23 @@ adminRouter.delete('/delete/course',adminMiddleware, async  (req, res) => {
 
 })
 adminRouter.put('/update/course', adminMiddleware, async  (req, res) => {
-    const id = req.id
-      const { newtitle, newdescription, newprice , newvalidity} = req.body;
-     try{
-        const newcourse = await courseModel.findByIdAndUpdate(id,{
-        newtitle,newdescription,newprice,newvalidity, new:true
-     },{new:true})
-     if(newcourse){
-        res.json({message:"course updated !"})
-     }
-     }catch(e){
-        console.log("error in course updation")
-     }
-
-
+    const adminID = req.id
+      const { newtitle, newdescription, newprice , newvalidity, courseID} = req.body;
+    try{
+        await courseModel.findOneAndUpdate({
+            _id:courseID,
+            creatorID:adminID
+        },{
+            title:newtitle,
+            description:newdescription,
+            price:newprice,
+            validity:newvalidity,
+        })
+        res.json({message:"course updated succcessfully"})
+    }catch(e){
+        console.log(e)
+    }
+      
+    
 })
-
 module.exports = adminRouter;

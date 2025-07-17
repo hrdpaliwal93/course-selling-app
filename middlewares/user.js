@@ -1,4 +1,5 @@
 
+const jwt = require('jsonwebtoken')
 function userMiddleware(req,res,next){
     let token = req.headers.token
     const decodedData = jwt.verify(token, `${process.env.JWT_USER}`)
