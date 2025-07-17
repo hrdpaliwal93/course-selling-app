@@ -35,7 +35,7 @@ userRouter.post('/login',async (req, res) => {
     if(user){
         let token = jwt.sign({
            id:user._id.toString()
-        },`${process.env.JWT_SECRET}`)
+        },`${process.env.JWT_USER}`)//Should not share the same secret for user and admins
         res.json({token:token})
     }else{
         res.json({message:"invalid login credentials"})

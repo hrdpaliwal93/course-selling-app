@@ -4,12 +4,51 @@ const jwt = require('jsonwebtoken')
 const {adminModel} = require('../db')
 const adminMiddleware = require('../middlewares/admin')
 
-adminRouter.post('/signup', (req, res) => {
+adminRouter.post('/signup', async (req, res) => {
+    let email = req.body.email
+    let password = req.body.password
+    let name = req.body.name
+
+   try{
+     await adminModel.create({
+       email:email,
+        password:password,
+        name:name
+    })
+     res.json({
+        message:"signed up successful"
+    })
+   }catch(e){
+    console.log(e)
+   }
+   
 
 
 })
 
-adminRouter.post('/login', (req, res) => {
+adminRouter.post('/login',async  (req, res) => {
+    let email = req.body.email
+    let password = req.body.password
+   
+
+   try{
+     let admin = await adminModel.findOne({
+       email,password
+    })
+    if(admin){
+        let token = jwt.sign({
+            id:admin._id
+        },`${process.env.JWT_ADMIN}`)
+        
+        res.json({token:token})
+    }else{
+        res.json({message:"invalif admin credentials"})
+    }
+    
+   }catch(e){
+    console.log(e)
+   }
+   
 
 })
 
