@@ -1,7 +1,7 @@
 const Router = require("express")
 const adminRouter = Router();
 const jwt = require('jsonwebtoken')
-const {adminModel} = require('../db')
+const {adminModel, courseModel} = require('../db')
 const adminMiddleware = require('../middlewares/admin')
 
 adminRouter.post('/signup', async (req, res) => {
@@ -37,7 +37,7 @@ adminRouter.post('/login',async  (req, res) => {
     })
     if(admin){
         let token = jwt.sign({
-            id:admin._id
+            id:admin._id.toString()
         },`${process.env.JWT_ADMIN}`)
         
         res.json({token:token})
@@ -52,16 +52,59 @@ adminRouter.post('/login',async  (req, res) => {
 
 })
 
-adminRouter.post('/create/course',adminMiddleware, (req, res) => {
+adminRouter.post('/create/course',adminMiddleware, async (req, res) => {
+    const id = req.id;
+    const { title, description, price , validity, imageURL , creatotID} = req.body;
+
+    try{
+        let course = await courseModel.create({
+        title,
+        description,
+        price,
+        validity,
+        creatorID:id,
+        imageURL ,
+         //watch kirat video on coind web3 saas in 6 hrs....to know how to make a pipeline to that user can directly add image to DB rather than URL
+    })
+    res.json({
+        courseID:course-_id
+    })
+
+       
+    }catch(e){
+        console.log(e)
+    }
 
 
 })
 
-adminRouter.delete('/delete/course',adminMiddleware,  (req, res) => {
-
+adminRouter.delete('/delete/course',adminMiddleware, async  (req, res) => {
+    let courseID = req.body.courseID
+   try{
+     let course = await courseModel.findOneAndDelete(courseID)
+      if(course){
+         res.json({message:"couse deleted !"})
+   }
+   }catch(e){
+    console.log(e)
+   }
+  
+   
 
 })
-adminRouter.put('/update/course', adminMiddleware, (req, res) => {
+adminRouter.put('/update/course', adminMiddleware, async  (req, res) => {
+    const id = req.id
+      const { newtitle, newdescription, newprice , newvalidity} = req.body;
+     try{
+        const newcourse = await courseModel.findByIdAndUpdate(id,{
+        newtitle,newdescription,newprice,newvalidity, new:true
+     },{new:true})
+     if(newcourse){
+        res.json({message:"course updated !"})
+     }
+     }catch(e){
+        console.log("error in course updation")
+     }
 
 
 })

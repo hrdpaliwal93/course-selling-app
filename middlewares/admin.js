@@ -1,7 +1,7 @@
 
 function adminMiddleware(req,res,next){
     let token = req.headers.token
-    const decodedData = jwt.verify(token, JWT_SECRET)
+    const decodedData = jwt.verify(token, JWT_ADMIN)
     if(decodedData){
         req.id=decodedData.id
         next()
