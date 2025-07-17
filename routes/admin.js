@@ -2,7 +2,7 @@ const Router = require("express")
 const adminRouter = Router();
 const jwt = require('jsonwebtoken')
 const adminModel = require('../db')
-import adminMiddleware from "../middlewares/admin";
+const adminMiddleware = require('../middlewares/admin')
 
 adminRouter.post('/signup', (req, res) => {
 

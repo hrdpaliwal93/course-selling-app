@@ -1,4 +1,4 @@
-import 'dotenv/config'
+
 function userMiddleware(req,res,next){
     let token = req.headers.token
     const decodedData = jwt.verify(token, `${process.env.JWT_SECRET}`)
@@ -12,5 +12,4 @@ function userMiddleware(req,res,next){
     }
 
 }
-
-export default userMiddleware
+module.exports = userMiddleware

@@ -1,4 +1,4 @@
-import 'dotenv/config'
+
 function adminMiddleware(req,res,next){
     let token = req.headers.token
     const decodedData = jwt.verify(token, JWT_SECRET)
@@ -12,4 +12,4 @@ function adminMiddleware(req,res,next){
     }
 
 }
-export default adminMiddleware
+module.exports = adminMiddleware
